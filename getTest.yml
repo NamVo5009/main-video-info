@@ -1,0 +1,41 @@
+config:
+  target: 'http://127.0.0.1:2000'
+  http:
+        pool: 10
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 100
+      name: "Warming up server"
+    - duration: 180
+      arrivalRate: 100
+      name: "max load"
+
+  processor: "./my-functions.js"
+scenarios:
+  - name: "Get requests for movie info and poster"
+    weight: 5
+    flow:
+      - function: "generateRandomID"
+      - get:
+          url: "/movies?movieID={{id}}"
+      - get:
+          url: "/movies/poster?movieID={{id}}"
+
+  # - name: "Post request for new movie"
+  #   weight: 1
+  #   flow:
+  #     - function: "generateRandomMovies"
+  #     - post:
+  #         url: "/movies/API/newMovie"
+  #         json:
+  #           name: "{{name}}"
+  #           genre: "{{genre}}"
+  #           score: "{{score}}"
+  #           runtime: "{{runtime}}"
+  #           image: "{{image}}"
+  #           rating: "{{rating}}"
+  #           releaseMonth: "{{releaseMonth}}"
+  #           releaseDay: "{{releaseDay}}"
+  #           releaseYear: "{{releaseYear}}"
+  #     - log: "Sent a request to /movies/API/newMovie {{name}}"
