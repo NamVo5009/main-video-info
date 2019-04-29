@@ -26,7 +26,6 @@ const getMovieInfo = (id, callback) => {
           releaseYear: movieInfo.releaseyear
         }
       }
-      console.log(movieInfo)
       callback(null,newObject)
     })
     .catch(error => {
@@ -37,7 +36,6 @@ const getMovieInfo = (id, callback) => {
 const getMoviePoster = (id, callback) => {
   db.one(`SELECT image FROM movies WHERE id = ${id}`)
     .then(posterInfo => {
-      console.log(posterInfo.image)
       callback(null,posterInfo.image)
     })
     .catch(error => {
@@ -46,7 +44,7 @@ const getMoviePoster = (id, callback) => {
 }
 
 const postNewMovie = (movieInfo, callback) =>{
-  db.one(`INSERT INTO movies(id ,name,releaseday,releaseMonth, releaseYear,genre,score,runtime,image,rating) VALUES(nextval('movies_seq'),'${movieInfo.name}', ${movieInfo.releaseDay}, '${movieInfo.releaseMonth}', ${movieInfo.releaseYear}, '${movieInfo.genre}', ${movieInfo.score}, ${movieInfo.runtime}, '${movieInfo.image}', ${movieInfo.rating}) RETURNING id`)
+  db.one(`INSERT INTO movies(id ,name,releaseday,releaseMonth, releaseYear,genre,score,runtime,image,rating) VALUES(nextval('movies_seq'),'${movieInfo.name}', ${movieInfo.releaseDay}, '${movieInfo.releaseMonth}', ${movieInfo.releaseYear}, '${movieInfo.genre}', ${movieInfo.score}, ${movieInfo.runtime}, '${movieInfo.image}', '${movieInfo.rating}') RETURNING id`)
     .then((id)=> {
       callback(null, id);
     })
@@ -66,7 +64,7 @@ const deleteMovie = (id, callback) => {
 }
 
 const updateMovie = (movieInfo, callback) => {
-  db.one(`UPDATE movies SET name = '${movieInfo.name}', releaseday = ${movieInfo.releaseDay},  releasemonth ='${movieInfo.releaseMonth}', releaseyear =${movieInfo.releaseYear}, genre = '${movieInfo.genre}', score =  ${movieInfo.score}, runtime = ${movieInfo.runtime}, image = '${movieInfo.image}', rating = ${movieInfo.rating} WHERE id = ${movieInfo.id} RETURNING id `)
+  db.one(`UPDATE movies SET name = '${movieInfo.name}', releaseday = ${movieInfo.releaseDay},  releasemonth ='${movieInfo.releaseMonth}', releaseyear =${movieInfo.releaseYear}, genre = '${movieInfo.genre}', score =  ${movieInfo.score}, runtime = ${movieInfo.runtime}, image = '${movieInfo.image}', rating = '${movieInfo.rating}' WHERE id = ${movieInfo.id} RETURNING id `)
     .then( (id) => {
       callback(null,id)
     })

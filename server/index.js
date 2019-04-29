@@ -45,7 +45,6 @@ app.get('/movies/poster', (req, res) => {
 })
 
 app.post('/movies/API/newMovie', (req, res) => {
-  console.log(req.body)
     db.postNewMovie(req.body, (err, results) => {
       if (err) {
         res.sendStatus(500);
